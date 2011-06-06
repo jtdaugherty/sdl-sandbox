@@ -45,7 +45,7 @@ int main(int argc, char **argv)
         exit(1);
     }
 
-    showImage((char *) "icons.png", screen, 0, 0);
+    showImage((char *) "graphics/icons.png", screen, 0, 0);
 
     while (1) {
         SDL_WaitEvent(&event);

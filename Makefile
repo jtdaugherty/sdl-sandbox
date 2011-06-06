@@ -7,16 +7,19 @@ SDLLIB=`sdl-config --libs`
 SDLFLAGS=$(SDLINC) $(SDLLIB) -framework Cocoa -lSDL_image
 CPPFLAGS=$(SDLINC) -Wall
 
-PROG=app
-OBJECTS=main.o
-EXTRAS=SDLMain.m
+BUILD=build
+PROG=$(BUILD)/app
+
+OBJECTS=$(BUILD)/main.o
+EXTRAS=SDLMain/SDLMain.m
 
 $(PROG): $(OBJECTS)
 	$(CC) $(CPPFLAGS) $(SDLFLAGS) $(OBJECTS) $(EXTRAS) -o $(PROG)
 
-%.cpp:
-	$(CC) $(CPPFLAGS) -c $@
+$(BUILD)/%.o: %.cpp
+	$(CC) $(CPPFLAGS) -c $*.cpp -o $(BUILD)/$*.o
 
 clean:
-	rm -f *.o
+	rm -f $(BUILD)/*.o
 	rm -f $(PROG)
+	rm -f *~
