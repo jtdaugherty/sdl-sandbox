@@ -19,16 +19,18 @@ Board::~Board()
     delete this->board;
 }
 
-void Board::nextMove(int x, int y, State s)
+void Board::nextMove(int x, int y)
 {
     if (x < 0 || y < 0 ||
         x >= this->sz || y >= this->sz)
         // XXX blow up here, this would be a bug
         return;
 
-    if (this->board[x][y] == NONE)
-        this->board[x][y] = s;
-    else
+    if (this->board[x][y] == NONE) {
+        this->board[x][y] = this->cur_state;
+        this->cur_state = ((this->cur_state == PLAYER_X) ?
+                           PLAYER_O : PLAYER_X);
+    } else
         // XXX blow up here, this would also be a bug
         return;
 }
@@ -150,7 +152,13 @@ State Board::getState(int x, int y)
 
 void Board::reset(void)
 {
+    this->cur_state = PLAYER_X;
     for (int i = 0; i < this->sz; i++)
         for (int j = 0; j < this->sz; j++)
             this->board[i][j] = NONE;
+}
+
+State Board::getCurrentState(void)
+{
+    return this->cur_state;
 }

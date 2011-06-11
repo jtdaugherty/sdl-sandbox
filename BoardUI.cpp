@@ -39,8 +39,6 @@ BoardUI::BoardUI(int sz) :
             this->rects[i][j].h = this->blank_sprite->h();
         }
     }
-
-    this->cur_state = PLAYER_X;
 }
 
 BoardUI::~BoardUI()
@@ -92,14 +90,7 @@ void BoardUI::handleMouseClick(int x, int y)
     for (int i = 0; i < this->size(); i++)
         for (int j = 0; j < this->size(); j++)
             if (in_rect(x, y, this->rects[i][j])) {
-                this->nextMove(i, j, this->cur_state);
-                this->cur_state = ((this->cur_state == PLAYER_X) ?
-                                   PLAYER_O : PLAYER_X);
+                this->nextMove(i, j);
+                return;
             }
-}
-
-void BoardUI::reset(void)
-{
-    this->cur_state = PLAYER_X;
-    Board::reset();
 }
