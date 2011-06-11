@@ -1,4 +1,7 @@
 
+#ifndef __SPRITESHEET_H__
+#define __SPRITESHEET_H__
+
 #include "SDL.h"
 #include "Sprite.h"
 
@@ -12,3 +15,5 @@ private:
     int cell_width, cell_height;
     SDL_Surface *surf;
 };
+
+#endif

@@ -1,4 +1,7 @@
 
+#ifndef __BOARDUI_H__
+#define __BOARDUI_H__
+
 #include "SDL.h"
 #include "Board.h"
 #include "Sprite.h"
@@ -16,3 +19,5 @@ class BoardUI : public Board {
     SDL_Rect **rects;
     State cur_state;
 };
+
+#endif

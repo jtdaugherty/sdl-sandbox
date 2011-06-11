@@ -1,4 +1,7 @@
 
+#ifndef __BOARD_H__
+#define __BOARD_H__
+
 enum State {
     NONE,
     PLAYER_X,
@@ -25,3 +28,5 @@ class Board {
     State **board;
     int sz;
 };
+
+#endif
