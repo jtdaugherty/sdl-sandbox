@@ -35,3 +35,13 @@ void Sprite::blit(SDL_Surface *dest)
         SDL_BlitSurface(this->surf, &this->src_rect,
                         dest, &this->dest_rect);
 }
+
+void Sprite::show(void)
+{
+    this->visible = true;
+}
+
+void Sprite::hide(void)
+{
+    this->visible = false;
+}

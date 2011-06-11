@@ -11,8 +11,8 @@ class Sprite {
     void setXY(int x, int y);
     int getX(void);
     int getY(void);
-    void show(void) { this->visible = true; }
-    void hide(void) { this->visible = false; }
+    void show(void);
+    void hide(void);
 
  private:
     SDL_Surface *surf;
