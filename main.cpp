@@ -59,6 +59,13 @@ int main(int argc, char **argv)
                 b.reset();
             }
 
+            if (b.getCurrentState() == PLAYER_X)
+                printf("Player turn: X\n");
+            else if (b.getCurrentState() == PLAYER_O)
+                printf("Player turn: O\n");
+            else
+                printf("YIKES!\n");
+
             break;
         case SDL_KEYDOWN:
             if (event.key.keysym.unicode > 0 &&
