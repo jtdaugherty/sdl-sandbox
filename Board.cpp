@@ -6,11 +6,10 @@ Board::Board(int sz) :
     sz(sz)
 {
     this->board = new State*[this->sz];
-    for (int i = 0; i < this->sz; i++) {
+    for (int i = 0; i < this->sz; i++)
         this->board[i] = new State[this->sz];
-        for (int j = 0; j < this->sz; j++)
-            this->board[i][j] = NONE;
-    }
+
+    this->reset();
 }
 
 Board::~Board()
@@ -122,4 +121,26 @@ void Board::show(void)
         }
         printf("\n");
     }
+}
+
+int Board::size(void)
+{
+    return this->sz;
+}
+
+State Board::getState(int x, int y)
+{
+    if (x < 0 || y < 0 ||
+        x >= this->sz || y >= this->sz)
+        // XXX blow up here, this would be a bug
+        return NONE;
+
+    return this->board[x][y];
+}
+
+void Board::reset(void)
+{
+    for (int i = 0; i < this->sz; i++)
+        for (int j = 0; j < this->sz; j++)
+            this->board[i][j] = NONE;
 }

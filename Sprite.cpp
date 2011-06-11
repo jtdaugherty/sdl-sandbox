@@ -2,11 +2,29 @@
 #include "SDL.h"
 #include "Sprite.h"
 
-Sprite::Sprite(SDL_Surface *surf, SDL_Rect src_rect) :
-    surf(surf),
-    src_rect(src_rect),
-    visible(true)
+Sprite::Sprite(SDL_Surface *surf)
 {
+    this->surf = surf;
+    this->defaults();
+}
+
+Sprite::Sprite(SDL_Surface *surf, SDL_Rect src_rect)
+{
+    this->surf = surf;
+    this->defaults();
+    this->src_rect = src_rect;
+}
+
+// Must set surf before calling.
+void Sprite::defaults(void)
+{
+    this->visible = true;
+
+    this->src_rect.x = 0;
+    this->src_rect.y = 0;
+    this->src_rect.w = this->surf->w;
+    this->src_rect.h = this->surf->h;
+
     this->dest_rect.x = 0;
     this->dest_rect.y = 0;
     this->dest_rect.w = this->surf->w;
@@ -27,6 +45,16 @@ int Sprite::getX(void)
 int Sprite::getY(void)
 {
     return this->dest_rect.y;
+}
+
+int Sprite::w(void)
+{
+    return this->surf->w;
+}
+
+int Sprite::h(void)
+{
+    return this->surf->h;
 }
 
 void Sprite::blit(SDL_Surface *dest)

@@ -7,6 +7,14 @@
 #include "Board.h"
 #include "SpriteSheet.h"
 
+bool in_rect(int x, int y, SDL_Rect r)
+{
+    return (x >= r.x &&
+            y >= r.y &&
+            x < (r.x + r.w) &&
+            y < (r.y + r.h));
+}
+
 int main(int argc, char **argv)
 {
     SDL_Surface *screen;
@@ -14,14 +22,15 @@ int main(int argc, char **argv)
     SDL_Event event;
     Board b(3);
 
-    b.nextMove(0, 2, PLAYER_X);
-    b.nextMove(1, 1, PLAYER_X);
-    b.nextMove(2, 0, PLAYER_X);
+    SDL_Surface *x;
+    SDL_Surface *o;
+    SDL_Surface *blank;
 
-    b.show();
+    Sprite *x_sprite;
+    Sprite *o_sprite;
+    Sprite *blank_sprite;
 
-    if (b.hasWinner())
-        printf("HAS WINNER!\n");
+    SDL_Rect **board_rects;
 
     if (SDL_Init(SDL_INIT_AUDIO|SDL_INIT_VIDEO) < 0) {
         fprintf(stderr, "Unable to initialize SDL: %s\n", SDL_GetError());
@@ -41,16 +50,70 @@ int main(int argc, char **argv)
         exit(1);
     }
 
-    SpriteSheet *sh = new SpriteSheet(image, 34, 34);
-    int x, y;
-    Sprite *s = sh->get(0, 0);
+    x = IMG_Load("graphics/x.gif");
+    if (x == NULL) {
+        printf("Could not load x image: %s\n", SDL_GetError());
+        exit(1);
+    }
+
+    o = IMG_Load("graphics/o.gif");
+    if (o == NULL) {
+        printf("Could not load o image: %s\n", SDL_GetError());
+        exit(1);
+    }
+
+    blank = IMG_Load("graphics/blank.gif");
+    if (blank == NULL) {
+        printf("Could not load blank image: %s\n", SDL_GetError());
+        exit(1);
+    }
+
+    x_sprite = new Sprite(x);
+    o_sprite = new Sprite(o);
+    blank_sprite = new Sprite(blank);
 
     screen = SDL_GetVideoSurface();
+
+    board_rects = new SDL_Rect*[b.size()];
+    for (int i = 0; i < b.size(); i++) {
+        board_rects[i] = new SDL_Rect[b.size()];
+        for (int j = 0; j < b.size(); j++) {
+            board_rects[i][j].x = i * blank_sprite->w();
+            board_rects[i][j].y = j * blank_sprite->h();
+            board_rects[i][j].w = blank_sprite->w();
+            board_rects[i][j].h = blank_sprite->h();
+        }
+    }
+
+    State cur_state = PLAYER_X;
 
     while (1) {
         SDL_FillRect(screen, NULL, 0x0);
 
-        s->blit(screen, x, y);
+        // Inspect the board state to determine which things to draw,
+        // and where.
+        int sz = b.size();
+        State s;
+        Sprite *sp;
+
+        for (int i = 0; i < sz; i++) {
+            for (int j = 0; j < sz; j++) {
+                s = b.getState(i, j);
+                switch (s) {
+                case NONE:
+                    sp = blank_sprite;
+                    break;
+                case PLAYER_X:
+                    sp = x_sprite;
+                    break;
+                case PLAYER_O:
+                    sp = o_sprite;
+                    break;
+                }
+
+                sp->blit(screen, board_rects[i][j].x, board_rects[i][j].y);
+            }
+        }
 
         // We'd call this, but then we'd have to figure out where the
         // image *was* before it got moved, and where it is now, in
@@ -66,27 +129,38 @@ int main(int argc, char **argv)
         SDL_WaitEvent(&event);
 
         switch (event.type) {
-        case SDL_KEYDOWN:
-            if (event.key.keysym.sym == SDLK_LEFT) {
-                x -= 5;
-            } else if (event.key.keysym.sym == SDLK_RIGHT) {
-                x += 5;
-            } else if (event.key.keysym.sym == SDLK_UP) {
-                y -= 5;
-            } else if (event.key.keysym.sym == SDLK_DOWN) {
-                y += 5;
-            } else {
-                if (event.key.keysym.unicode > 0 &&
-                    event.key.keysym.unicode < 0x80)
-                    printf("Key: %c\n", (char) event.key.keysym.unicode);
+        case SDL_MOUSEBUTTONDOWN:
+            printf("Mouse button %d pressed at (%d,%d)\n",
+                   event.button.button, event.button.x, event.button.y);
 
-                switch (event.key.keysym.unicode) {
-                case 'q':
-                    SDL_Quit();
-                    exit(0);
-                    break;
-                }
+            // Compute which board cell, if any, this corresponds to.
+            for (int i = 0; i < b.size(); i++)
+                for (int j = 0; j < b.size(); j++)
+                    if (in_rect(event.button.x, event.button.y,
+                                board_rects[i][j])) {
+                        b.nextMove(i, j, cur_state);
+                        cur_state = ((cur_state == PLAYER_X) ? PLAYER_O : PLAYER_X);
+                    }
+
+            if (b.hasWinner()) {
+                printf("HAS WINNER!\n");
+                b.reset();
+                cur_state = PLAYER_X;
             }
+
+            break;
+        case SDL_KEYDOWN:
+            if (event.key.keysym.unicode > 0 &&
+                event.key.keysym.unicode < 0x80)
+                printf("Key: %c\n", (char) event.key.keysym.unicode);
+
+            switch (event.key.keysym.unicode) {
+            case 'q':
+                SDL_Quit();
+                exit(0);
+                break;
+            }
+
             break;
         case SDL_QUIT:
             exit(0);
