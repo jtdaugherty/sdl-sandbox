@@ -2,7 +2,7 @@
 #include "SDL.h"
 #include "Sprite.h"
 
-Sprite::Sprite(SDL_Surface *surf, SDL_Rect *src_rect)
+Sprite::Sprite(SDL_Surface *surf, SDL_Rect src_rect)
 {
     this->surf = surf;
     this->src_rect = src_rect;
@@ -31,6 +31,6 @@ int Sprite::getY(void)
 
 void Sprite::blit(SDL_Surface *dest)
 {
-    SDL_BlitSurface(this->surf, this->src_rect,
+    SDL_BlitSurface(this->surf, &this->src_rect,
                     dest, &this->dest_rect);
 }
