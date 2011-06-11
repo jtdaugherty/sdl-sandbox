@@ -2,11 +2,10 @@
 #include "SDL.h"
 #include "Sprite.h"
 
-Sprite::Sprite(SDL_Surface *surf, SDL_Rect src_rect)
+Sprite::Sprite(SDL_Surface *surf, SDL_Rect src_rect) :
+    surf(surf),
+    src_rect(src_rect)
 {
-    this->surf = surf;
-    this->src_rect = src_rect;
-
     this->dest_rect.x = 0;
     this->dest_rect.y = 0;
     this->dest_rect.w = this->surf->w;

@@ -32,12 +32,16 @@ int main(int argc, char **argv)
 
     SpriteSheet *sh = new SpriteSheet(image, 34, 34);
     int x, y;
+    Sprite *s = sh->get(0, 0);
 
     screen = SDL_GetVideoSurface();
 
     while (1) {
         SDL_FillRect(screen, NULL, 0x0);
-        sh->put(screen, x, y, 0, 0);
+
+        s->setXY(x, y);
+        s->blit(screen);
+
         // We'd call this, but then we'd have to figure out where the
         // image *was* before it got moved, and where it is now, in
         // order to ensure that the correct area gets updated.  We

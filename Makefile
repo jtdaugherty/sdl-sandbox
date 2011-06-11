@@ -16,7 +16,10 @@ EXTRAS=SDLMain/SDLMain.m
 $(PROG): $(OBJECTS)
 	$(CC) $(CPPFLAGS) $(SDLFLAGS) $(OBJECTS) $(EXTRAS) -o $(PROG)
 
-$(BUILD)/%.o: %.cpp
+$(BUILD)/main.o: main.cpp
+	$(CC) $(CPPFLAGS) -c main.cpp -o $(BUILD)/main.o
+
+$(BUILD)/%.o: %.cpp %.h
 	$(CC) $(CPPFLAGS) -c $*.cpp -o $(BUILD)/$*.o
 
 clean:
