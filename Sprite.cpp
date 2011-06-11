@@ -36,6 +36,12 @@ void Sprite::blit(SDL_Surface *dest)
                         dest, &this->dest_rect);
 }
 
+void Sprite::blit(SDL_Surface *dest, int x, int y)
+{
+    this->setXY(x, y);
+    this->blit(dest);
+}
+
 void Sprite::show(void)
 {
     this->visible = true;

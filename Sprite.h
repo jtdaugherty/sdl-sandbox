@@ -8,6 +8,8 @@ class Sprite {
     Sprite(SDL_Surface *surf, SDL_Rect src_rect);
 
     void blit(SDL_Surface *dest);
+    void blit(SDL_Surface *dest, int x, int y);
+
     void setXY(int x, int y);
     int getX(void);
     int getY(void);
