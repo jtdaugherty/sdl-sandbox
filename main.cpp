@@ -39,8 +39,7 @@ int main(int argc, char **argv)
     while (1) {
         SDL_FillRect(screen, NULL, 0x0);
 
-        s->setXY(x, y);
-        s->blit(screen);
+        s->blit(screen, x, y);
 
         // We'd call this, but then we'd have to figure out where the
         // image *was* before it got moved, and where it is now, in
