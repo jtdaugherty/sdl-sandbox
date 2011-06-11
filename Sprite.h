@@ -1,4 +1,7 @@
 
+#ifndef __SPRITE_H__
+#define __SPRITE_H__
+
 #include "SDL.h"
 
 class Sprite {
@@ -29,3 +32,5 @@ class Sprite {
     int x, y;
     bool visible;
 };
+
+#endif
