@@ -4,6 +4,7 @@
 #include "SDL.h"
 #include "SDL_image.h"
 
+#include "Board.h"
 #include "SpriteSheet.h"
 
 int main(int argc, char **argv)
@@ -11,6 +12,16 @@ int main(int argc, char **argv)
     SDL_Surface *screen;
     SDL_Surface *image;
     SDL_Event event;
+    Board b(3);
+
+    b.nextMove(0, 2, PLAYER_X);
+    b.nextMove(1, 1, PLAYER_X);
+    b.nextMove(2, 0, PLAYER_X);
+
+    b.show();
+
+    if (b.hasWinner())
+        printf("HAS WINNER!\n");
 
     if (SDL_Init(SDL_INIT_AUDIO|SDL_INIT_VIDEO) < 0) {
         fprintf(stderr, "Unable to initialize SDL: %s\n", SDL_GetError());

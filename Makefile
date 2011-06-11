@@ -10,7 +10,9 @@ CPPFLAGS=$(SDLINC) -Wall
 BUILD=build
 PROG=$(BUILD)/app
 
-OBJECTS=$(BUILD)/main.o $(BUILD)/SpriteSheet.o $(BUILD)/Sprite.o
+OBJECTS=$(BUILD)/main.o $(BUILD)/SpriteSheet.o $(BUILD)/Sprite.o \
+	$(BUILD)/Board.o
+
 EXTRAS=SDLMain/SDLMain.m
 
 $(PROG): $(OBJECTS)
