@@ -4,41 +4,7 @@
 #include "SDL.h"
 #include "SDL_image.h"
 
-class ImageGrid {
-public:
-    ImageGrid(SDL_Surface *surf, int cell_width, int cell_height);
-
-    void put(SDL_Surface *dest, int dest_x, int dest_y, int cell_x, int cell_y);
-
-private:
-    int cell_width, cell_height;
-    SDL_Surface *surf;
-};
-
-ImageGrid::ImageGrid(SDL_Surface *surf, int cell_width, int cell_height)
-{
-    this->surf = surf;
-    this->cell_width = cell_width;
-    this->cell_height = cell_height;
-}
-
-void ImageGrid::put(SDL_Surface *dest_surf, int dest_x, int dest_y, int cell_x, int cell_y)
-{
-    SDL_Rect dest;
-    SDL_Rect src;
-
-    src.x = cell_x * this->cell_width;
-    src.y = cell_y * this->cell_height;
-    src.w = this->cell_width;
-    src.h = this->cell_height;
-
-    dest.x = dest_x;
-    dest.y = dest_y;
-    dest.w = this->cell_width;
-    dest.h = this->cell_height;
-
-    SDL_BlitSurface(this->surf, &src, dest_surf, &dest);
-}
+#include "SpriteSheet.h"
 
 int main(int argc, char **argv)
 {
@@ -51,7 +17,7 @@ int main(int argc, char **argv)
         exit(1);
     }
 
-    atexit(SDL_Quit);
+    SDL_EnableUNICODE(1);
 
     if (!SDL_SetVideoMode(640, 480, 16, SDL_SWSURFACE)) {
         fprintf(stderr, "Unable to set video mode: %s\n", SDL_GetError());
@@ -64,14 +30,14 @@ int main(int argc, char **argv)
         exit(1);
     }
 
-    ImageGrid *g = new ImageGrid(image, 34, 34);
+    SpriteSheet *sh = new SpriteSheet(image, 34, 34);
     int x, y;
 
     screen = SDL_GetVideoSurface();
 
     while (1) {
         SDL_FillRect(screen, NULL, 0x0);
-        g->put(screen, x, y, 0, 0);
+        sh->put(screen, x, y, 0, 0);
         // We'd call this, but then we'd have to figure out where the
         // image *was* before it got moved, and where it is now, in
         // order to ensure that the correct area gets updated.  We
@@ -95,10 +61,20 @@ int main(int argc, char **argv)
                 y -= 5;
             } else if (event.key.keysym.sym == SDLK_DOWN) {
                 y += 5;
+            } else {
+                if (event.key.keysym.unicode > 0 &&
+                    event.key.keysym.unicode < 0x80)
+                    printf("Key: %c\n", (char) event.key.keysym.unicode);
+
+                switch (event.key.keysym.unicode) {
+                case 'q':
+                    SDL_Quit();
+                    exit(0);
+                    break;
+                }
             }
             break;
         case SDL_QUIT:
-            printf("Some quit stuff happened\n");
             exit(0);
         }
     }
