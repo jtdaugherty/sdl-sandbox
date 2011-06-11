@@ -11,10 +11,13 @@ class Sprite {
     void setXY(int x, int y);
     int getX(void);
     int getY(void);
+    void show(void) { this->visible = true; }
+    void hide(void) { this->visible = false; }
 
  private:
     SDL_Surface *surf;
     SDL_Rect src_rect;
     SDL_Rect dest_rect;
     int x, y;
+    bool visible;
 };
