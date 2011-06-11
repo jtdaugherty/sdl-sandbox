@@ -15,6 +15,7 @@ class Board {
 
     void nextMove(int x, int y, State s);
     bool hasWinner(void);
+    bool hasMovesLeft(void);
     void show(void);
     int size(void);
     State getState(int x, int y);

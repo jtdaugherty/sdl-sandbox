@@ -54,6 +54,9 @@ int main(int argc, char **argv)
             if (b.hasWinner()) {
                 printf("HAS WINNER!\n");
                 b.reset();
+            } else if (!b.hasMovesLeft()) {
+                printf("No moves left, it's a draw!\n");
+                b.reset();
             }
 
             break;

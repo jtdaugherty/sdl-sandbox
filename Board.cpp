@@ -38,6 +38,16 @@ bool Board::hasWinner(void)
     return this->rowWinner() || this->colWinner() || this->diagWinner();
 }
 
+bool Board::hasMovesLeft(void)
+{
+    for (int i = 0; i < this->sz; i++)
+        for (int j = 0; j < this->sz; j++)
+            if (this->board[i][j] == NONE)
+                return true;
+
+    return false;
+}
+
 bool Board::rowWinner(void)
 {
     for (int row = 0; row < this->sz; row++) {
