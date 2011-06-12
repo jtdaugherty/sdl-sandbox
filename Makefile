@@ -11,7 +11,7 @@ BUILD=build
 PROG=$(BUILD)/app
 
 OBJECTS=$(BUILD)/main.o $(BUILD)/SpriteSheet.o $(BUILD)/Sprite.o \
-	$(BUILD)/Board.o $(BUILD)/BoardUI.o
+	$(BUILD)/Board.o $(BUILD)/BoardUI.o $(BUILD)/Timer.o
 
 EXTRAS=SDLMain/SDLMain.m
 

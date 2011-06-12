@@ -5,12 +5,16 @@
 
 #include "BoardUI.h"
 #include "SpriteSheet.h"
+#include "Timer.h"
+
+#define FRAMES_PER_SECOND 30
 
 int main(int argc, char **argv)
 {
     SDL_Surface *screen;
     SDL_Event event;
     BoardUI b(3);
+    Timer fps_timer;
 
     if (SDL_Init(SDL_INIT_AUDIO|SDL_INIT_VIDEO) < 0) {
         fprintf(stderr, "Unable to initialize SDL: %s\n", SDL_GetError());
@@ -27,6 +31,8 @@ int main(int argc, char **argv)
     screen = SDL_GetVideoSurface();
 
     while (1) {
+        fps_timer.start();
+
         SDL_FillRect(screen, NULL, 0x0);
 
         b.blit(screen, 10, 70);
@@ -42,47 +48,50 @@ int main(int argc, char **argv)
         // SDL_UpdateRects(dest_surf, 1, &dest);
         SDL_Flip(screen);
 
-        SDL_WaitEvent(&event);
+        while (SDL_PollEvent(&event)) {
+            switch (event.type) {
+            case SDL_MOUSEBUTTONDOWN:
+                printf("Mouse button %d pressed at (%d,%d)\n",
+                       event.button.button, event.button.x, event.button.y);
 
-        switch (event.type) {
-        case SDL_MOUSEBUTTONDOWN:
-            printf("Mouse button %d pressed at (%d,%d)\n",
-                   event.button.button, event.button.x, event.button.y);
+                b.handleMouseClick(event.button.x - 10, event.button.y - 70);
 
-            b.handleMouseClick(event.button.x - 10, event.button.y - 70);
+                if (b.hasWinner()) {
+                    printf("HAS WINNER!\n");
+                    b.reset();
+                } else if (!b.hasMovesLeft()) {
+                    printf("No moves left, it's a draw!\n");
+                    b.reset();
+                }
 
-            if (b.hasWinner()) {
-                printf("HAS WINNER!\n");
-                b.reset();
-            } else if (!b.hasMovesLeft()) {
-                printf("No moves left, it's a draw!\n");
-                b.reset();
-            }
+                if (b.getCurrentState() == PLAYER_X)
+                    printf("Player turn: X\n");
+                else if (b.getCurrentState() == PLAYER_O)
+                    printf("Player turn: O\n");
+                else
+                    printf("YIKES!\n");
 
-            if (b.getCurrentState() == PLAYER_X)
-                printf("Player turn: X\n");
-            else if (b.getCurrentState() == PLAYER_O)
-                printf("Player turn: O\n");
-            else
-                printf("YIKES!\n");
-
-            break;
-        case SDL_KEYDOWN:
-            if (event.key.keysym.unicode > 0 &&
-                event.key.keysym.unicode < 0x80)
-                printf("Key: %c\n", (char) event.key.keysym.unicode);
-
-            switch (event.key.keysym.unicode) {
-            case 'q':
-                SDL_Quit();
-                exit(0);
                 break;
-            }
+            case SDL_KEYDOWN:
+                if (event.key.keysym.unicode > 0 &&
+                    event.key.keysym.unicode < 0x80)
+                    printf("Key: %c\n", (char) event.key.keysym.unicode);
 
-            break;
-        case SDL_QUIT:
-            exit(0);
+                switch (event.key.keysym.unicode) {
+                case 'q':
+                    SDL_Quit();
+                    exit(0);
+                    break;
+                }
+
+                break;
+            case SDL_QUIT:
+                exit(0);
+            }
         }
+
+        if (fps_timer.get_ticks() < 1000 / FRAMES_PER_SECOND)
+            SDL_Delay((1000 / FRAMES_PER_SECOND) - fps_timer.get_ticks());
     }
 
     return 0;
