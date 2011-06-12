@@ -90,8 +90,9 @@ int main(int argc, char **argv)
             }
         }
 
-        if (fps_timer.get_ticks() < 1000 / FRAMES_PER_SECOND)
-            SDL_Delay((1000 / FRAMES_PER_SECOND) - fps_timer.get_ticks());
+        int t = fps_timer.get_ticks();
+        if (t < (1000 / FRAMES_PER_SECOND))
+            SDL_Delay((1000 / FRAMES_PER_SECOND) - t);
     }
 
     return 0;
