@@ -1,0 +1,5 @@
+
+EXTRAS=SDLMain/SDLMain.m
+SDLFLAGS=$(SDLINC) $(SDLLIB) -lSDL_image -framework Cocoa
+
+include Makefile
