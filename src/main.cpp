@@ -21,8 +21,6 @@ int main(int argc, char **argv)
         exit(1);
     }
 
-    SDL_EnableUNICODE(1);
-
     if (!SDL_SetVideoMode(640, 480, 16, SDL_SWSURFACE)) {
         fprintf(stderr, "Unable to set video mode: %s\n", SDL_GetError());
         exit(1);
