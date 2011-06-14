@@ -52,7 +52,7 @@ int main(int argc, char **argv)
                 printf("Mouse button %d pressed at (%d,%d)\n",
                        event.button.button, event.button.x, event.button.y);
 
-                b.handleMouseClick(event.button.x - 10, event.button.y - 70);
+                b.handleMouseClick(event.button.x - 20, event.button.y - 20);
 
                 if (b.hasWinner()) {
                     printf("HAS WINNER!\n");
