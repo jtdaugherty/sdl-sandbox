@@ -14,7 +14,7 @@ Linux (Debian-like) prerequisites:
 
 OS X (Macports) prerequisites:
 
-  port install libsdl libsd_image
+  port install libsdl libsdl_image
 
 Build
 -----
