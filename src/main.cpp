@@ -88,6 +88,13 @@ int main(int argc, char **argv)
             }
         }
 
+        // Imprecise but it's better than using all of the CPU time.
+        // In this sort of game we don't actually need to render until
+        // we get an event anyway, but this moves in the direction of
+        // having a less input-driven engine.  Ideally we'll use
+        // interpolation to determine everything else in the engine
+        // and render as often as we can and we won't use the delay
+        // technique at all.
         int t = fps_timer.get_ticks();
         if (t < (1000 / FRAMES_PER_SECOND))
             SDL_Delay((1000 / FRAMES_PER_SECOND) - t);
