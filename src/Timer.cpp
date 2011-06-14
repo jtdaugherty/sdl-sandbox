@@ -1,4 +1,7 @@
 
+// This class copyright Lazy Foo, taken from:
+// http://lazyfoo.net/SDL_tutorials/lesson13/index.php
+
 #include "SDL.h"
 #include "Timer.h"
 
