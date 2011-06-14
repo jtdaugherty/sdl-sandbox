@@ -28,11 +28,12 @@ void Timer::stop()
 
 int Timer::get_ticks()
 {
-    if (started == true)
+    if (started == true) {
         if (paused == true)
             return pausedTicks;
         else
             return SDL_GetTicks() - startTicks;
+    }
 
     return 0;
 }
