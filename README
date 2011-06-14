@@ -1,0 +1,28 @@
+
+About
+-----
+
+This is just a little SDL sandbox codebase I'm using to mess around.
+At the time of this writing, it implements a tic-tac-toe game.
+
+Setup
+-----
+
+Linux (Debian-like) prerequisites:
+
+  apt-get install libsdl1.2-dev libsdl-image1.2-dev
+
+OS X (Macports) prerequisites:
+
+  port install libsdl libsd_image
+
+Build
+-----
+
+To build on Linux:
+
+  make
+
+To build on OS X:
+
+  make -f Makefile.osx
