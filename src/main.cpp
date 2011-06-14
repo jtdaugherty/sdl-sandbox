@@ -33,7 +33,7 @@ int main(int argc, char **argv)
 
         SDL_FillRect(screen, NULL, 0x0);
 
-        b.blit(screen, 10, 70);
+        b.blit(screen, 20, 20);
 
         // We'd call this, but then we'd have to figure out where the
         // image *was* before it got moved, and where it is now, in
