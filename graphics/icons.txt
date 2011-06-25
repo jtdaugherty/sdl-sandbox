@@ -1,2 +1,0 @@
-icons: 30 high, 14 wide
-34 pixels square per icon

@@ -1,0 +1,5 @@
+icons: 30 high, 14 wide
+34 pixels square per icon
+
+rpg_sprite_walk: 4 high, 8 wide
+24 pixels wide, 32 pixels high per tile

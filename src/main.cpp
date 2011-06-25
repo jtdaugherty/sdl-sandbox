@@ -16,10 +16,10 @@ int main(int argc, char **argv)
 {
     SDL_Surface *screen;
     SDL_Event event;
-    BoardUI b(3);
+    BoardUI board(3);
     Timer fps_timer;
 
-    Animation a1(4), a2(30);
+    Animation a(10), b(10), c(10), d(10);
     SpriteSheet *s;
 
     if (SDL_Init(SDL_INIT_AUDIO|SDL_INIT_VIDEO) < 0) {
@@ -36,27 +36,53 @@ int main(int argc, char **argv)
 
     screen = SDL_GetVideoSurface();
 
-    SDL_Surface *i = IMG_Load("graphics/icons.png");
-    s = new SpriteSheet(i, 34, 34);
+    SDL_Surface *i = IMG_Load("graphics/rpg_sprite_walk.png");
+    s = new SpriteSheet(i, 24, 32);
 
-    a1.add_frame(s->get(0, 0));
-    a1.add_frame(s->get(0, 1));
-    a1.add_frame(s->get(0, 2));
-    a1.add_frame(s->get(0, 3));
+    a.add_frame(s->get(0, 0));
+    a.add_frame(s->get(1, 0));
+    a.add_frame(s->get(2, 0));
+    a.add_frame(s->get(3, 0));
+    a.add_frame(s->get(4, 0));
+    a.add_frame(s->get(5, 0));
+    a.add_frame(s->get(6, 0));
+    a.add_frame(s->get(7, 0));
 
-    a2.add_frame(s->get(1, 0));
-    a2.add_frame(s->get(1, 1));
-    a2.add_frame(s->get(1, 2));
-    a2.add_frame(s->get(1, 3));
-    a2.add_frame(s->get(1, 4));
-    a2.add_frame(s->get(1, 5));
-    a2.add_frame(s->get(1, 6));
-    a2.add_frame(s->get(1, 7));
+    b.add_frame(s->get(0, 1));
+    b.add_frame(s->get(1, 1));
+    b.add_frame(s->get(2, 1));
+    b.add_frame(s->get(3, 1));
+    b.add_frame(s->get(4, 1));
+    b.add_frame(s->get(5, 1));
+    b.add_frame(s->get(6, 1));
+    b.add_frame(s->get(7, 1));
+
+    c.add_frame(s->get(0, 2));
+    c.add_frame(s->get(1, 2));
+    c.add_frame(s->get(2, 2));
+    c.add_frame(s->get(3, 2));
+    c.add_frame(s->get(4, 2));
+    c.add_frame(s->get(5, 2));
+    c.add_frame(s->get(6, 2));
+    c.add_frame(s->get(7, 2));
+
+    d.add_frame(s->get(0, 3));
+    d.add_frame(s->get(1, 3));
+    d.add_frame(s->get(2, 3));
+    d.add_frame(s->get(3, 3));
+    d.add_frame(s->get(4, 3));
+    d.add_frame(s->get(5, 3));
+    d.add_frame(s->get(6, 3));
+    d.add_frame(s->get(7, 3));
+
+    // 24 wide, 32 high
 
     int t = SDL_GetTicks();
 
-    a1.start(t);
-    a2.start(t);
+    a.start(t);
+    b.start(t);
+    c.start(t);
+    d.start(t);
 
     while (1) {
         t = SDL_GetTicks();
@@ -65,10 +91,12 @@ int main(int argc, char **argv)
 
         SDL_FillRect(screen, NULL, 0x0);
 
-        b.blit(screen, 20, 20);
+        board.blit(screen, 20, 20);
 
-        a1.blit(screen, 200, 200, t);
-        a2.blit(screen, 200, 300, t);
+        a.blit(screen, 200, 200, t);
+        b.blit(screen, 200, 250, t);
+        c.blit(screen, 200, 300, t);
+        d.blit(screen, 200, 350, t);
 
         // We'd call this, but then we'd have to figure out where the
         // image *was* before it got moved, and where it is now, in
@@ -87,19 +115,19 @@ int main(int argc, char **argv)
                 printf("Mouse button %d pressed at (%d,%d)\n",
                        event.button.button, event.button.x, event.button.y);
 
-                b.handleMouseClick(event.button.x - 20, event.button.y - 20);
+                board.handleMouseClick(event.button.x - 20, event.button.y - 20);
 
-                if (b.hasWinner()) {
+                if (board.hasWinner()) {
                     printf("HAS WINNER!\n");
-                    b.reset();
-                } else if (!b.hasMovesLeft()) {
+                    board.reset();
+                } else if (!board.hasMovesLeft()) {
                     printf("No moves left, it's a draw!\n");
-                    b.reset();
+                    board.reset();
                 }
 
-                if (b.getCurrentState() == PLAYER_X)
+                if (board.getCurrentState() == PLAYER_X)
                     printf("Player turn: X\n");
-                else if (b.getCurrentState() == PLAYER_O)
+                else if (board.getCurrentState() == PLAYER_O)
                     printf("Player turn: O\n");
                 else
                     printf("YIKES!\n");
