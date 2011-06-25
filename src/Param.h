@@ -19,7 +19,6 @@ class LinearParam : public Param {
     void setup(float start, float stop, float velocity);
 
     float get(int current_time_millis);
-    void reset(void);
  protected:
     float startVal, stopVal, velocity;
 };
