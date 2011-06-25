@@ -7,7 +7,6 @@
 #include "Param.h"
 #include "BoardUI.h"
 #include "SpriteSheet.h"
-#include "Timer.h"
 #include "Animation.h"
 
 #define FRAMES_PER_SECOND 30
@@ -17,7 +16,6 @@ int main(int argc, char **argv)
     SDL_Surface *screen;
     SDL_Event event;
     BoardUI board(3);
-    Timer fps_timer;
 
     Animation a(10), b(10), c(10), d(10);
     SpriteSheet *s;
@@ -87,8 +85,6 @@ int main(int argc, char **argv)
     while (1) {
         t = SDL_GetTicks();
 
-        fps_timer.start();
-
         SDL_FillRect(screen, NULL, 0x0);
 
         board.blit(screen, 20, 20);
@@ -150,17 +146,6 @@ int main(int argc, char **argv)
                 exit(0);
             }
         }
-
-        // Imprecise but it's better than using all of the CPU time.
-        // In this sort of game we don't actually need to render until
-        // we get an event anyway, but this moves in the direction of
-        // having a less input-driven engine.  Ideally we'll use
-        // interpolation to determine everything else in the engine
-        // and render as often as we can and we won't use the delay
-        // technique at all.
-        int t = fps_timer.get_ticks();
-        if (t < (1000 / FRAMES_PER_SECOND))
-            SDL_Delay((1000 / FRAMES_PER_SECOND) - t);
     }
 
     return 0;
