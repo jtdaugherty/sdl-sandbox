@@ -22,11 +22,7 @@ void LinearParam::setup(float start, float stop, float velocity)
 {
     this->startVal = start;
     this->stopVal = stop;
-
     this->velocity = velocity;
-
-    if (start > stop)
-        this->velocity = -1 * this->velocity;
 }
 
 float LinearParam::get(int current_time_millis)
