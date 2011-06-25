@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include "SDL.h"
 
+#include "Param.h"
 #include "BoardUI.h"
 #include "SpriteSheet.h"
 #include "Timer.h"

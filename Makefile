@@ -13,7 +13,8 @@ BUILD=build
 PROG=$(BUILD)/app
 
 OBJECTS=$(BUILD)/main.o $(BUILD)/SpriteSheet.o $(BUILD)/Sprite.o \
-	$(BUILD)/Board.o $(BUILD)/BoardUI.o $(BUILD)/Timer.o
+	$(BUILD)/Board.o $(BUILD)/BoardUI.o $(BUILD)/Timer.o \
+	$(BUILD)/Param.o
 
 $(PROG): $(OBJECTS)
 	$(CC) $(CPPFLAGS) $(SDLFLAGS) $(OBJECTS) $(EXTRAS) -o $(PROG)
