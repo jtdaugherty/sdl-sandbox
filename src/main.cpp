@@ -2,11 +2,13 @@
 #include <stdlib.h>
 #include <stdexcept>
 #include "SDL.h"
+#include "SDL_Image.h"
 
 #include "Param.h"
 #include "BoardUI.h"
 #include "SpriteSheet.h"
 #include "Timer.h"
+#include "Animation.h"
 
 #define FRAMES_PER_SECOND 30
 
@@ -16,6 +18,9 @@ int main(int argc, char **argv)
     SDL_Event event;
     BoardUI b(3);
     Timer fps_timer;
+
+    Animation a1(4), a2(30);
+    SpriteSheet *s;
 
     if (SDL_Init(SDL_INIT_AUDIO|SDL_INIT_VIDEO) < 0) {
         fprintf(stderr, "Unable to initialize SDL: %s\n", SDL_GetError());
@@ -31,12 +36,39 @@ int main(int argc, char **argv)
 
     screen = SDL_GetVideoSurface();
 
+    SDL_Surface *i = IMG_Load("graphics/icons.png");
+    s = new SpriteSheet(i, 34, 34);
+
+    a1.add_frame(s->get(0, 0));
+    a1.add_frame(s->get(0, 1));
+    a1.add_frame(s->get(0, 2));
+    a1.add_frame(s->get(0, 3));
+
+    a2.add_frame(s->get(1, 0));
+    a2.add_frame(s->get(1, 1));
+    a2.add_frame(s->get(1, 2));
+    a2.add_frame(s->get(1, 3));
+    a2.add_frame(s->get(1, 4));
+    a2.add_frame(s->get(1, 5));
+    a2.add_frame(s->get(1, 6));
+    a2.add_frame(s->get(1, 7));
+
+    int t = SDL_GetTicks();
+
+    a1.start(t);
+    a2.start(t);
+
     while (1) {
+        t = SDL_GetTicks();
+
         fps_timer.start();
 
         SDL_FillRect(screen, NULL, 0x0);
 
         b.blit(screen, 20, 20);
+
+        a1.blit(screen, 200, 200, t);
+        a2.blit(screen, 200, 300, t);
 
         // We'd call this, but then we'd have to figure out where the
         // image *was* before it got moved, and where it is now, in
